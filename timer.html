@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1 
+{
+ text-align: center;
+ font-family: "Jokerman";
+ font-size:350%%;
+ font-style:bold;
+}
+
+button
+{
+ background-color: #555555;
+ border: 2px solid #e7e7e7;
+ color: white;
+ padding: 15px 32px;
+ border-radius: 50%;
+ text-align: center;
+ text-decoration: none;
+ font-family: "Jokerman";
+ display: inline-block;
+ font-size: 20px;
+ margin: 4px 2px;
+ left:25em;
+ top:4em;
+        
+}
+input[type=number]{
+ width: 40px;
+ border: 2px solid #555555;
+ padding: 15px;
+ border-radius: 50%;
+ text-align: center;
+ font-family: "Jokerman";
+ display: inline-block;
+ font-size: 20px;
+ margin: 4px 2px;
+ left:30em;       
+}
+body{background-color:red;}
+label{margin-left:30em;}
+</style>
+
+<h1>COUNTDOWN BEGINS!!!</h1>
+
+</head>
+
+<body>
+
+<form>
+
+<label for="days">ENTER TIME IN DAYS</label>
+<input id="days" type="number" name="countdown"><br>    
+<label for="hours">ENTER TIME IN HOURS</label>
+<input id="hr" type="number" name="countdown"><br>
+<label for="minutes">ENTER TIME IN MINUTES</label>
+<input id="min" type="number" name="countdown"><br>
+<label for="seconds">ENTER TIME IN SECONDS</label>
+<input id="sec" type="number" name="countdown"><br>
+</form>
+
+
+
+<button  id="submit" onclick="startFunction()" >START</button>
+<button  id="stop"onclick="stopFunction()" >STOP</button>
+<button  id="reset"onclick="resetFunction()" >RESET</button>
+
+<h1 id="message" ></h1>
+
+<div style="margin-top:6px;margin-left:5em;"><span id="time" style="font-size:200%;font-family:Jokerman;"></span></div>
+
+<script>
+
+
+var det;
+function startFunction() {
+    document.getElementById("message").innerHTML="COUNTING";
+    
+    clearInterval(det);
+    var days=document.getElementById("days").value;
+    var hr=document.getElementById("hr").value;
+    var min=document.getElementById("min").value;
+    var sec=document.getElementById("sec").value;
+    var dur=Number(days)*86400+Number(hr)*3600+Number(min)*60+Number(sec);
+    var timer = dur,days,hours,minutes, seconds;
+     var display=document.getElementById("time");
+     det=setInterval(function () {
+        days=parseInt(timer / 86400, 10);
+        hours = parseInt((timer % 86400)/3600, 10);
+
+        
+        minutes = parseInt(((timer % 86400)%3600)/60, 10);
+        seconds = parseInt(((timer % 86400)%3600)%60, 10);
+        days = days< 10 ? "0" + days : days;
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+       display.textContent = days + " -DAYS-" + hours + " -HOURS-" + minutes + " -MIN- " + seconds +"-SECONDS ";
+        if (timer <= 0) {
+            timer = 0;
+           document.getElementById("message").innerHTML="COUNTDOWN COMPLETE";
+       
+        }else --timer;
+       
+        
+    }, 1000);
+}
+
+function stopFunction()
+{
+var display=document.getElementById("time");
+
+document.getElementById("message").innerHTML="COUNTDOWN COMPLETE";
+clearInterval(det);
+}
+
+function resetFunction()
+{ var display=document.getElementById("time");
+   clearInterval(det);
+   document.getElementById("message").innerHTML="RESETING...";
+  var days=document.getElementById("days").value;
+    var hr=document.getElementById("hr").value;
+    var min=document.getElementById("min").value;
+    var sec=document.getElementById("sec").value;
+    var dur=Number(days)*86400+Number(hr)*3600+Number(min)*60+Number(sec);
+    var timer = duration,days,hours,minutes, seconds;
+    days=parseInt(timer / 86400, 10);
+        hours = parseInt((timer % 86400)/3600, 10);
+        
+        minutes = parseInt(((timer % 86400)%3600)/60, 10);
+        seconds = parseInt(((timer % 86400)%3600)%60, 10);
+        days = days< 10 ? "0" + days : days;
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = days + " -DAYS-" + hours + " -HOURS-" + minutes + " -MIN- " + seconds +"- SECONDS ";
+ }
+</script>
+</body>
+</html>
