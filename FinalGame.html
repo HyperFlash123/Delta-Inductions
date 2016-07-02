@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body 
+{
+background: url(city.jpg) repeat-x;
+-webkit-animation: loader 16s steps(100) infinite;
+}
+@-webkit-keyframes loader 
+{
+from {background-position: left 0;}
+to {background-position: left -566;}
+}
+
+h1 
+{
+ text-align: center;
+ font-family: "Jokerman";
+ font-size:200%;
+ font-style:bold;
+ color:white;
+}
+button {
+  display: inline-block;
+  border-radius: 3px;
+  border: none;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8em;
+  background: #69c773;
+  border-bottom: 1px solid #498b50;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  font-weight: bold;
+  margin: 0 0.25rem;
+  text-align: center;
+}
+</style>
+
+
+</head>
+
+<body>
+<h1>CITY RUNNER<h1>
+<button type="button" id="startBtn">PLAY!</button>
+    <button type="button" id="stopBtn">PAUSE</button>
+    <button type="button" id="resetBtn">RESET</button>
+<canvas id="canvas" width="1320" height="400"></canvas>
+<script>
+
+var FPS=30;var keypressed = false;var timer=null;
+var canvas = document.getElementById("canvas");
+var ctx= canvas.getContext("2d");
+
+var rock = {
+    color: "green",
+    x: 600,
+    y: 340,
+    width:48,
+	height:44};
+	
+var boulder = {  
+    color: "green",
+    x: 1320,
+    y: 344,
+    width:50,
+	height:50};	
+	
+
+var sprite = {
+    color: "green",
+	sf:0,
+    sx: 0,
+    sy: 0,
+	velocity:0,
+	gravity:0.3,
+	dx:200,
+	dy:144,
+    swidth:900/8,
+	dwidth:900/8,
+	height:240};
+
+var spriteset = new Image();
+spriteset.src = "finalman.png";	
+
+	function draw() 
+ {
+ ctx.drawImage(spriteset,sprite.sx,sprite.sy,sprite.swidth,sprite.height,sprite.dx,sprite.dy,sprite.dwidth,sprite.height);
+  var imageObj1 = new Image();
+      imageObj1.onload = function() {
+      ctx.drawImage(imageObj1,rock.x,rock.y,rock.width,rock.height);};
+      imageObj1.src = 'rock.png';
+ var imageObj2 = new Image();
+      imageObj2.onload = function() {
+      ctx.drawImage(imageObj2,boulder.x,boulder.y,boulder.width,boulder.height);};
+      imageObj2.src = 'snake.png';	   
+}
+	 
+	 function update() {
+	 
+	 var sxMid=sprite.dx+900/16;
+	 var syBot=sprite.dy+192;
+	 
+	 
+	 if
+	 (
+	 ((sxMid<rock.x+48)&&(sxMid>rock.x)&&(syBot>rock.y)&&(syBot<rock.y+rock.height))
+	 ||
+	 ((sxMid<boulder.x+48)&&(sxMid>boulder.x)&&(syBot>boulder.y)&&(syBot<boulder.y+boulder.height)
+	 )
+	 )
+	 
+	  {alert("GAME OVER");}
+	 
+	 
+	 if((rock.x>0) && (rock.x<rock.width)){rock.x=1320;rock.y=344;}
+		 else{rock.x -= rock.width/8;}
+		 
+	if((boulder.x>0) && (boulder.x<boulder.width)){boulder.x=1320;boulder.y=344;}
+		 else{boulder.x -= boulder.width/10;}	 
+		 
+		 
+		sprite.sf++;
+		sprite.sx=(sprite.sf%8)*sprite.dwidth;
+		
+		
+    if (sprite.dy + sprite.velocity + 240 > 380) {
+        
+        sprite.velocity = 0;
+        sprite.dy =144;
+    } else {
+        
+        sprite.velocity += sprite.gravity;
+        sprite.dy += sprite.velocity*1.1;
+    } 
+
+	}
+
+	function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    draw();
+	if (keypressed) {sprite.velocity = -5;keypressed = false;}
+	update();
+    }
+	
+	
+	
+	startBtn.addEventListener('click', function(e) {
+		e.preventDefault();
+
+		timer = setInterval(tick,8000/FPS);
+		
+	}); 
+	
+	stopBtn.addEventListener('click', function(e) {
+		e.preventDefault();
+	
+	timer=clearTimeout(timer);timer=null;
+	});
+	
+	resetBtn.addEventListener('click', function(e) {
+		e.preventDefault();
+		
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	timer=clearTimeout(timer);timer=null;
+	setTimeout(function(){timer = setInterval(tick,5000/FPS)},5000/FPS);
+	
+	rock.x=600;
+    rock.y=340;
+    rock.width=48;
+	rock.height=44;
+	
+
+	boulder.x=1320;
+    boulder.y=340;
+    boulder.width=50;
+	boulder.height=50;
+    
+	sprite.sf=0;
+    sprite.sx= 0;
+    sprite.sy= 0;
+	sprite.dx=200;
+	sprite.dy=144;
+   
+    tick();
+
+
+	});
+
+
+	
+	document.addEventListener('keydown', function (e) {
+    if (e.keyCode == '32') 
+	{keypressed = true;}
+	}, false);
+	
+	
+	
+
+</script>
+</body>
+</html>
